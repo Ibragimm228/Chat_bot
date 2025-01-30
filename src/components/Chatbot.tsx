@@ -24,22 +24,15 @@ export default function Chatbot() {
     try {
       const response = await api.post('chat/completions', {
         "model": "openai/gpt-3.5-turbo",
-        "messages": [
-          {
-            "role": "user",
-            "content": input
-          }
-        ]
+        "messages": [{ "role": "user", "content": input }]
       });
-      const botReply = response.data?.choices[0].message.content || 'Ответ не получен.';
+      
+      const botReply = response.data?.choices?.[0]?.message?.content || 'Ответ не получен.';
       const botMessage = { user: 'Бот', text: botReply };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Ошибка:', error);
-      setMessages((prev) => [
-        ...prev,
-        { user: 'Бот', text: 'Ошибка: не удалось получить ответ.' },
-      ]);
+      setMessages((prev) => [...prev, { user: 'Бот', text: 'Ошибка: не удалось получить ответ.' }]);
     } finally {
       setIsLoading(false);
     }
@@ -57,17 +50,8 @@ export default function Chatbot() {
       <div className="h-[600px] flex flex-col">
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`flex ${msg.user === 'Вы' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}
-            >
-              <div
-                className={`max-w-[80%] p-3 rounded-2xl ${
-                  msg.user === 'Вы'
-                    ? 'bg-zinc-900 text-white rounded-tr-sm'
-                    : 'bg-zinc-100 text-zinc-900 rounded-tl-sm'
-                }`}
-              >
+            <div key={index} className={`flex ${msg.user === 'Вы' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
+              <div className={`max-w-[80%] p-3 rounded-2xl ${msg.user === 'Вы' ? 'bg-zinc-900 text-white rounded-tr-sm' : 'bg-zinc-100 text-zinc-900 rounded-tl-sm'}`}>
                 <div className="text-sm font-medium mb-1">{msg.user}</div>
                 <div className="text-sm whitespace-pre-wrap">{msg.text}</div>
               </div>
@@ -98,10 +82,12 @@ export default function Chatbot() {
               className="bg-zinc-900 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-zinc-800 disabled:opacity-50 transition-all"
             >
               {isLoading ? 'Отправка...' : 'Отправить'}
-            </button>
+            </button> 
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+// что то там там ну где то там там тамтам
